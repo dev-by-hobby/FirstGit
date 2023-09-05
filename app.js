@@ -7,3 +7,8 @@ var titles = document.getElementsByClassName('title');
 console.log(titles);
 titles[0].style.fontWeight = 'bold';
 titles[0].style.color = '#6eeb34';
+var lists = document.getElementsByClassName('list-group-item');
+lists[2].style.background = '#34eb5e';
+for (let i = 0; i < lists.length; i++) {
+    lists[i].style.fontWeight = 'bold';
+}
