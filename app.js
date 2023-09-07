@@ -54,3 +54,31 @@ newDiv2.appendChild(newDivText2);
 var unorder = document.querySelector('ul');
 var li1 = document.querySelector('ul li:first-child');
 unorder.insertBefore(newDiv2, li1);
+
+var form = document.getElementById('addForm');
+var itemList = document.getElementById('items');
+itemList.addEventListener('click', removeItem);
+
+function addItem(e){
+    e.preventDefault();
+  
+    var deleteBtn = document.createElement('button');
+  
+    deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+  
+    deleteBtn.appendChild(document.createTextNode('X'));
+  
+    li.appendChild(deleteBtn);
+  
+    itemList.appendChild(li);
+  }
+  
+  function removeItem(e){
+    if(e.target.classList.contains('delete')){
+      if(confirm('Are You Sure?')){
+        var li = e.target.parentElement;
+        itemList.removeChild(li);
+      }
+    }
+  }
+  
