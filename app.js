@@ -76,6 +76,7 @@ function addItem(e){
     li.appendChild(deleteBtn);
   
     itemList.appendChild(li);
+    storeItemInLocalStorage(newItem);
   }
   
   function removeItem(e){
@@ -99,3 +100,6 @@ function addItem(e){
       }
     });
   }
+  function storeItemInLocalStorage(item) {
+    localStorage.setItem('item', item);
+}
