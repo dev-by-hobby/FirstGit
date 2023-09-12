@@ -101,5 +101,6 @@ function addItem(e){
     });
   }
   function storeItemInLocalStorage(item) {
-    localStorage.setItem('item', item);
+    var key = 'item_' + Date.now();
+    localStorage.setItem(key, item);
 }
