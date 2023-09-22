@@ -45,6 +45,22 @@
                 // Display user data in a list below the form
                 const listItem = document.createElement('li');
                 listItem.textContent = `Name: ${name}, Email: ${email}, Phone: ${phone}`;
+                
+                // Create a delete button for each list item
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function () {
+                    // Remove the list item from the screen
+                    userList.removeChild(listItem);
+
+                    // Remove the user data from local storage
+                    removeUserFromLocalStorage(email);
+                });
+
+                // Append the delete button to the list item
+                listItem.appendChild(deleteButton);
+
+                // Append the list item to the user list
                 userList.appendChild(listItem);
 
                 // Save user data to local storage
@@ -75,9 +91,36 @@
                         const userData = storedUsers[email];
                         const listItem = document.createElement('li');
                         listItem.textContent = `Name: ${userData.name}, Email: ${email}, Phone: ${userData.phone}`;
+                        
+                        // Create a delete button for each list item
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.addEventListener('click', function () {
+                            // Remove the list item from the screen
+                            userList.removeChild(listItem);
+
+                            // Remove the user data from local storage
+                            removeUserFromLocalStorage(email);
+                        });
+
+                        // Append the delete button to the list item
+                        listItem.appendChild(deleteButton);
+
+                        // Append the list item to the user list
                         userList.appendChild(listItem);
                     }
                 }
+            }
+
+            function removeUserFromLocalStorage(email) {
+                // Retrieve existing user data from local storage (if any)
+                const storedUsers = JSON.parse(localStorage.getItem('users')) || {};
+
+                // Remove the user data with the specified email as the key
+                delete storedUsers[email];
+
+                // Store the updated user data back in local storage
+                localStorage.setItem('users', JSON.stringify(storedUsers));
             }
         });
     </script>
