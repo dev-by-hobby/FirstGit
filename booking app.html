@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form and Local Storage Example</title>
+</head>
+<body>
+    <h1>Simple Form</h1>
+    <form id="userForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br><br>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" required><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Stored Users:</h2>
+    <ul id="userList"></ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userForm = document.getElementById('userForm');
+            const userList = document.getElementById('userList');
+
+            // Load existing user data from local storage (if any)
+            loadUsersFromLocalStorage();
+
+            userForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const phoneInput = document.getElementById('phone');
+
+                const name = nameInput.value;
+                const email = emailInput.value;
+                const phone = phoneInput.value;
+
+                // Display user data in a list below the form
+                const listItem = document.createElement('li');
+                listItem.textContent = `Name: ${name}, Email: ${email}, Phone: ${phone}`;
+                
+                // Create a delete button for each list item
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function () {
+                    // Remove the list item from the screen
+                    userList.removeChild(listItem);
+
+                    // Remove the user data from local storage
+                    removeUserFromLocalStorage(email);
+                });
+
+                // Append the delete button to the list item
+                listItem.appendChild(deleteButton);
+
+                // Append the list item to the user list
+                userList.appendChild(listItem);
+
+                // Save user data to local storage
+                saveUserToLocalStorage(email, { name, phone });
+
+                // Clear the form fields
+                nameInput.value = '';
+                emailInput.value = '';
+                phoneInput.value = '';
+            });
+
+            function saveUserToLocalStorage(email, userData) {
+                // Retrieve existing user data from local storage (if any)
+                const storedUsers = JSON.parse(localStorage.getItem('users')) || {};
+
+                // Add or update the user data with email as the key
+                storedUsers[email] = userData;
+
+                // Store the updated user data back in local storage
+                localStorage.setItem('users', JSON.stringify(storedUsers));
+            }
+
+            function loadUsersFromLocalStorage() {
+                const storedUsers = JSON.parse(localStorage.getItem('users'));
+
+                if (storedUsers) {
+                    for (const email in storedUsers) {
+                        const userData = storedUsers[email];
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `Name: ${userData.name}, Email: ${email}, Phone: ${userData.phone}`;
+                        
+                        // Create a delete button for each list item
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.addEventListener('click', function () {
+                            // Remove the list item from the screen
+                            userList.removeChild(listItem);
+
+                            // Remove the user data from local storage
+                            removeUserFromLocalStorage(email);
+                        });
+
+                        // Append the delete button to the list item
+                        listItem.appendChild(deleteButton);
+
+                        // Append the list item to the user list
+                        userList.appendChild(listItem);
+                    }
+                }
+            }
+
+            function removeUserFromLocalStorage(email) {
+                // Retrieve existing user data from local storage (if any)
+                const storedUsers = JSON.parse(localStorage.getItem('users')) || {};
+
+                // Remove the user data with the specified email as the key
+                delete storedUsers[email];
+
+                // Store the updated user data back in local storage
+                localStorage.setItem('users', JSON.stringify(storedUsers));
+            }
+        });
+    </script>
+</body>
+</html>
